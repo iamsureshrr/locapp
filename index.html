@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Location-Based Website</title>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(checkLocation, showError);
+        } else {
+          document.body.innerHTML = "<h2>Geolocation is not supported by this browser.</h2>";
+        }
+      }
+
+      function checkLocation(position) {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+
+        // Log the user's latitude and longitude to the console
+        console.log("User's Latitude, Longitude: "+ userLat , userLng);
+        //console.log();
+
+        // Organization's coordinates (latitude and longitude)
+        const orgLat = 12.93095856086252;
+        const orgLng = 80.20778512501334;
+        const allowedRadius = 100; // in meters
+
+        const distance = calculateDistance(userLat, userLng, orgLat, orgLng);
+        console.log("Distance from allowed location: " + distance + " meters");
+
+        // Check if user is within the allowed radius
+        if (distance <= allowedRadius) {
+          document.getElementById('content').innerHTML = "<h1>Access granted. You are within the location.</h1>";
+        } else {
+          document.getElementById('content').innerHTML = "<h1>Please go to the right location.</h1>";
+        }
+      }
+
+      // Calculate the distance between two locations using the Haversine formula
+      function calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371e3; // Radius of the Earth in meters
+        const φ1 = lat1 * (Math.PI / 180); // Convert degrees to radians
+        const φ2 = lat2 * (Math.PI / 180);
+        const Δφ = (lat2 - lat1) * (Math.PI / 180);
+        const Δλ = (lon2 - lon1) * (Math.PI / 180);
+
+        const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                  Math.cos(φ1) * Math.cos(φ2) *
+                  Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        const distance = R * c; // Distance in meters
+        return distance;
+      }
+
+      function showError(error) {
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            document.body.innerHTML = "<h2>User denied the request for Geolocation.</h2>";
+            break;
+          case error.POSITION_UNAVAILABLE:
+            document.body.innerHTML = "<h2>Location information is unavailable.</h2>";
+            break;
+          case error.TIMEOUT:
+            document.body.innerHTML = "<h2>The request to get user location timed out.</h2>";
+            break;
+          case error.UNKNOWN_ERROR:
+            document.body.innerHTML = "<h2>An unknown error occurred.</h2>";
+            break;
+        }
+      }
+
+      // Start location check when the page loads
+      getLocation();
+    });
+  </script>
+</head>
+<body>
+  <div id="content">
+    <h2>Checking your location...</h2>
+  </div>
+</body>
+</html>
