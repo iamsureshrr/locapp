@@ -19,12 +19,11 @@
         const userLng = position.coords.longitude;
 
         // Log the user's latitude and longitude to the console
-        console.log("User's Latitude, Longitude: "+ userLat , userLng);
-        //console.log();
+        console.log("User's Latitude, Longitude: " + userLat + ", " + userLng);
 
         // Organization's coordinates (latitude and longitude)
-        const orgLat = 12.9310058;
-        const orgLng = 80.207665;
+        const orgLat = 12.919053622534351;
+        const orgLng = 80.23414941897563;
         const allowedRadius = 100; // in meters
 
         const distance = calculateDistance(userLat, userLng, orgLat, orgLng);
