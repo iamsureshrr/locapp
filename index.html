@@ -6,19 +6,9 @@
   <title>Location-Based Website</title>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      let previousLocation = null; // To store the previous location for filtering
-      const updateFrequency = 2000; // Check location every 2 seconds
-      const allowedRadius = 10; // Radius in meters
-      const orgLat = 12.9106072; // Organization's latitude
-      const orgLng = 80.2274784; // Organization's longitude
-
       function getLocation() {
         if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(checkLocation, showError, {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0
-          });
+          navigator.geolocation.getCurrentPosition(checkLocation, showError);
         } else {
           document.body.innerHTML = "<h2>Geolocation is not supported by this browser.</h2>";
         }
@@ -31,30 +21,23 @@
         // Log the user's latitude and longitude to the console
         console.log("User's Latitude, Longitude: " + userLat + ", " + userLng);
 
-        // Simple noise filtering
-        if (previousLocation) {
-          const distanceToPrevious = calculateDistance(userLat, userLng, previousLocation.lat, previousLocation.lng);
-          if (distanceToPrevious > 5) { // Only accept changes greater than 5 meters
-            previousLocation = { lat: userLat, lng: userLng }; // Update only if the new location is valid
-          } else {
-            return; // Ignore the update if it's too close to the previous location
-          }
-        } else {
-          previousLocation = { lat: userLat, lng: userLng }; // Initialize on the first run
-        }
+        // Organization's coordinates (latitude and longitude)
+        const orgLat = 12.910666569729184;
+        const orgLng = 80.22755496943918;
+        const allowedRadius = 10; // in meters
 
         const distance = calculateDistance(userLat, userLng, orgLat, orgLng);
         console.log("Distance from allowed location: " + distance + " meters");
 
         // Check if user is within the allowed radius
         if (distance <= allowedRadius) {
-          document.getElementById('content').innerHTML = `
+          document.getElementById('content').innerHTML = 
             <h1>Congratulations! You are inside the cafeteria.</h1>
-            <p>You can give your feedback.</p>`;
+            <p>You can give your feedback.</p>;
         } else {
-          document.getElementById('content').innerHTML = `
+          document.getElementById('content').innerHTML = 
             <h1>You are ${distance.toFixed(1)} meters away from the cafeteria.</h1>
-            <p>Please go inside the cafeteria.</p>`;
+            <p>Please go inside the cafeteria.</p>;
         }
       }
 
@@ -94,7 +77,7 @@
 
       // Start location checks when the page loads
       getLocation();
-      setInterval(getLocation, updateFrequency); // Check location at defined intervals
+      setInterval(getLocation, 2000); // Check location every 2 seconds
     });
   </script>
 </head>
