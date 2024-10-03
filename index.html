@@ -17,27 +17,32 @@
       function checkLocation(position) {
         const userLat = position.coords.latitude;
         const userLng = position.coords.longitude;
+        const userAlt = position.coords.altitude;
 
-        // Log the user's latitude and longitude to the console
-        console.log("User's Latitude, Longitude: " + userLat + ", " + userLng);
+        // Log the user's latitude, longitude, and altitude to the console
+        console.log("User's Latitude: " + userLat);
+        console.log("User's Longitude: " + userLng);
+        console.log("User's Altitude: " + userAlt + " meters");
 
         // Organization's coordinates (latitude and longitude)
         const orgLat = 12.9106517;
         const orgLng = 80.2275688;
         const allowedRadius = 20; // in meters
+        const minAltitude = 20; // Minimum altitude in meters
+        const maxAltitude = 30; // Maximum altitude in meters
 
         const distance = calculateDistance(userLat, userLng, orgLat, orgLng);
         console.log("Distance from allowed location: " + distance + " meters");
 
-        // Check if user is within the allowed radius
-        if (distance <= allowedRadius) {
+        // Check if user is within the allowed radius and altitude range
+        if (distance <= allowedRadius && userAlt >= minAltitude && userAlt <= maxAltitude) {
           document.getElementById('content').innerHTML = `
             <h1>Congratulations! You are connected.</h1>
             <p>Welcome to the home page.</p>`;
         } else {
           document.getElementById('content').innerHTML = `
             <h1>You are ${distance.toFixed(1)} meters away from the location.</h1>
-            <p>Please go to the right location.</p>`;
+            <p>Please go to the right location and ensure you're at the correct altitude.</p>`;
         }
       }
 
