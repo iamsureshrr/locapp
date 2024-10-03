@@ -14,12 +14,12 @@
         }
       }
 
-     function checkLocation(position) {
+  function checkLocation(position) {
   const userLat = position.coords.latitude;
   const userLng = position.coords.longitude;
 
-  // Log the user's latitude and longitude to the console
-  console.log("User's Latitude, Longitude: " + userLat + ", " + userLng);
+  // Log the user's full latitude and longitude to the console
+  console.log(`User's Latitude: ${userLat}, Longitude: ${userLng}`);
 
   // Organization's coordinates (latitude and longitude)
   const orgLat = 12.910666569729184;
@@ -40,6 +40,8 @@
       <p>Please go inside the cafeteria.</p>`;
   }
 }
+
+
 
 
       // Calculate the distance between two locations using the Haversine formula
