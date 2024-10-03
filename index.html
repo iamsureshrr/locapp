@@ -6,9 +6,19 @@
   <title>Location-Based Website</title>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      let previousLocation = null; // To store the previous location for filtering
+      const updateFrequency = 2000; // Check location every 2 seconds
+      const allowedRadius = 10; // Radius in meters
+      const orgLat = 12.9106072; // Organization's latitude
+      const orgLng = 80.2274784; // Organization's longitude
+
       function getLocation() {
         if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(checkLocation, showError);
+          navigator.geolocation.getCurrentPosition(checkLocation, showError, {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+          });
         } else {
           document.body.innerHTML = "<h2>Geolocation is not supported by this browser.</h2>";
         }
@@ -21,10 +31,17 @@
         // Log the user's latitude and longitude to the console
         console.log("User's Latitude, Longitude: " + userLat + ", " + userLng);
 
-        // Organization's coordinates (latitude and longitude)
-        const orgLat = 12.9106072;
-        const orgLng = 80.2274784;
-        const allowedRadius = 10; // in meters
+        // Simple noise filtering
+        if (previousLocation) {
+          const distanceToPrevious = calculateDistance(userLat, userLng, previousLocation.lat, previousLocation.lng);
+          if (distanceToPrevious > 5) { // Only accept changes greater than 5 meters
+            previousLocation = { lat: userLat, lng: userLng }; // Update only if the new location is valid
+          } else {
+            return; // Ignore the update if it's too close to the previous location
+          }
+        } else {
+          previousLocation = { lat: userLat, lng: userLng }; // Initialize on the first run
+        }
 
         const distance = calculateDistance(userLat, userLng, orgLat, orgLng);
         console.log("Distance from allowed location: " + distance + " meters");
@@ -77,7 +94,7 @@
 
       // Start location checks when the page loads
       getLocation();
-      setInterval(getLocation, 2000); // Check location every 2 seconds
+      setInterval(getLocation, updateFrequency); // Check location at defined intervals
     });
   </script>
 </head>
