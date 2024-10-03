@@ -32,12 +32,12 @@
         // Check if user is within the allowed radius
         if (distance <= allowedRadius) {
           document.getElementById('content').innerHTML = `
-            <h1>Congratulations! You are connected.</h1>
-            <p>Welcome to the home page.</p>`;
+            <h1>Congratulations! You are inside cafeteria.</h1>
+            <p>You can give your feedback.</p>`;
         } else {
           document.getElementById('content').innerHTML = `
-            <h1>You are ${distance.toFixed(1)} meters away from the location.</h1>
-            <p>Please go to the right location.</p>`;
+            <h1>You are ${distance.toFixed(1)} meters away from cafeteria.</h1>
+            <p>Please go inside the cafeteria.</p>`;
         }
       }
 
