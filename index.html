@@ -32,11 +32,11 @@
         // Check if user is within the allowed radius
         if (distance <= allowedRadius) {
           document.getElementById('content').innerHTML = `
-            <h1>Congratulations! You are inside cafeteria.</h1>
+            <h1>Congratulations! You are inside the cafeteria.</h1>
             <p>You can give your feedback.</p>`;
         } else {
           document.getElementById('content').innerHTML = `
-            <h1>You are ${distance.toFixed(1)} meters away from cafeteria.</h1>
+            <h1>You are ${distance.toFixed(1)} meters away from the cafeteria.</h1>
             <p>Please go inside the cafeteria.</p>`;
         }
       }
@@ -75,8 +75,9 @@
         }
       }
 
-      // Start location check when the page loads
+      // Start location checks when the page loads
       getLocation();
+      setInterval(getLocation, 2000); // Check location every 2 seconds
     });
   </script>
 </head>
